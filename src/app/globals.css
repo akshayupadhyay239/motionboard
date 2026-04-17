@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #F4F3EF;
+  --cream-2: #ECEAE3;
+  --cream-3: #E0DDD5;
+  --ink: #0D0D0D;
+  --ink-2: #3A3935;
+  --ink-muted: #78766E;
+  --ink-faint: #B5B2A9;
+  --white: #FFFFFF;
+  --accent: #1C1C8E;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
