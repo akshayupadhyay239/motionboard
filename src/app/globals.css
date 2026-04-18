@@ -11,6 +11,15 @@
   --white: #FFFFFF;
   --accent: #1C1C8E;
 
+  /* Typography */
+  --font-size-xs:   0.75rem;   /* 12px — captions, labels */
+  --font-size-sm:   0.875rem;  /* 14px — secondary text */
+  --font-size-base: 1rem;      /* 16px — body */
+  --font-size-lg:   1.125rem;  /* 18px — lead text */
+  --font-size-xl:   1.5rem;    /* 24px — subheadings */
+  --font-size-2xl:  2rem;      /* 32px — section headings */
+  --font-size-3xl:  3rem;      /* 48px — page headings */
+
   /* Easing */
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
