@@ -65,46 +65,15 @@ export default async function ContestDetailPage({ params }: PageProps) {
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
 
-      <Link href="/contests" className="inline-flex items-center gap-1.5 text-sm font-medium text-[#78766E] hover:text-[#0D0D0D] transition-colors mb-10">
+      <Link href="/contests" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#3A3935] hover:text-[#0D0D0D] transition-colors mb-10">
         ← Back to contests
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        {/* Main content */}
-        <div className="lg:col-span-2">
-          {/* Brand row */}
-          <div className="flex items-center gap-3 mb-6">
-            {contest.thumbnail_url ? (
-              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-[#ECEAE3]">
-                <Image src={contest.thumbnail_url} alt={contest.brand} fill className="object-cover" sizes="40px" />
-              </div>
-            ) : (
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#ECEAE3] text-[11px] font-black text-[#78766E]">
-                {contest.brand.slice(0, 2).toUpperCase()}
-              </div>
-            )}
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#B5B2A9]">{contest.brand}</p>
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#B5B2A9]">{contest.source_platform} · {contest.category}</p>
-            </div>
-          </div>
-
-          <h1
-            className="text-4xl sm:text-5xl font-black text-[#0D0D0D] leading-tight mb-8"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            {contest.title}
-          </h1>
-
-          <div className="prose prose-zinc max-w-none">
-            <p className="text-[#3A3935] leading-relaxed text-base whitespace-pre-line">{contest.description}</p>
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="rounded-3xl bg-[#0D0D0D] p-7 sticky top-20">
+        {/* Sidebar — rendered first on mobile so CTA is above the fold */}
+        <div className="lg:col-span-1 lg:order-last">
+          <div className="rounded-3xl bg-[#0D0D0D] p-7 lg:sticky lg:top-20">
             {/* Prize */}
             <div className="mb-6">
               <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Prize</p>
@@ -159,6 +128,37 @@ export default async function ContestDetailPage({ params }: PageProps) {
             >
               {isClosed ? 'Contest Closed' : 'Go Enter →'}
             </a>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="lg:col-span-2 lg:order-first">
+          {/* Brand row */}
+          <div className="flex items-center gap-3 mb-6">
+            {contest.thumbnail_url ? (
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-[#ECEAE3]">
+                <Image src={contest.thumbnail_url} alt={contest.brand} fill className="object-cover" sizes="40px" />
+              </div>
+            ) : (
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#ECEAE3] text-[11px] font-black text-[#78766E]">
+                {contest.brand.slice(0, 2).toUpperCase()}
+              </div>
+            )}
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#B5B2A9]">{contest.brand}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#B5B2A9]">{contest.source_platform} · {contest.category}</p>
+            </div>
+          </div>
+
+          <h1
+            className="text-4xl sm:text-5xl font-black text-[#0D0D0D] leading-tight mb-8"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            {contest.title}
+          </h1>
+
+          <div className="prose prose-zinc max-w-none">
+            <p className="text-[#3A3935] leading-relaxed text-base whitespace-pre-line">{contest.description}</p>
           </div>
         </div>
 

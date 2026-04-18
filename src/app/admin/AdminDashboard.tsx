@@ -87,7 +87,7 @@ export function AdminDashboard({ pending, approved }: AdminDashboardProps) {
                 <div className="flex flex-wrap gap-1.5">
                   <Badge className={CATEGORY_COLORS[contest.category]}>{contest.category}</Badge>
                   <Badge className={PLATFORM_COLORS[contest.source_platform]}>{contest.source_platform}</Badge>
-                  <Badge className={contest.status === 'open' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-zinc-700/40 text-zinc-400 border-zinc-600/30'}>
+                  <Badge className={contest.status === 'open' ? 'bg-emerald-500/20 text-emerald-200 border-emerald-500/30' : 'bg-zinc-700/40 text-zinc-300 border-zinc-600/30'}>
                     {contest.status}
                   </Badge>
                 </div>

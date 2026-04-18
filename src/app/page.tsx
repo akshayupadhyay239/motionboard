@@ -82,13 +82,13 @@ export default async function HomePage() {
           <div className="animate-fade-up flex items-center gap-3" style={{ animationDelay: '200ms' }}>
             <Link
               href="/contests"
-              className="rounded-full bg-[#0D0D0D] px-6 py-3 text-sm font-semibold text-white hover:bg-[#3A3935] transition-colors hover:scale-[1.02] active:scale-[0.98] transition-transform"
+              className="rounded-full bg-[#0D0D0D] px-6 py-3 text-sm font-semibold text-white hover:bg-[#3A3935] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
             >
               Browse contests
             </Link>
             <Link
               href="/submit"
-              className="rounded-full border border-[#E0DDD5] px-6 py-3 text-sm font-medium text-[#78766E] hover:border-[#0D0D0D] hover:text-[#0D0D0D] transition-colors hover:scale-[1.02] active:scale-[0.98] transition-transform"
+              className="rounded-full border border-[#E0DDD5] px-6 py-3 text-sm font-medium text-[#78766E] hover:border-[#0D0D0D] hover:text-[#0D0D0D] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
             >
               Submit one →
             </Link>

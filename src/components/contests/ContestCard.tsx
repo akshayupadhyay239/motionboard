@@ -49,13 +49,13 @@ export function ContestCard({ contest, variant = 'default', size = 'default', in
         <div className="flex items-start justify-between mb-auto">
           <div className="flex items-center gap-2.5">
             {contest.thumbnail_url ? (
-              <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-xl bg-black/10">
+              <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-xl" style={{ background: 'oklch(88% 0.005 250)' }}>
                 <Image src={contest.thumbnail_url} alt={contest.brand} fill className="object-cover" sizes="32px" />
               </div>
             ) : (
               <div
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-[10px] font-black ${
-                  variant === 'default' ? 'bg-[#ECEAE3] text-[#0D0D0D]' : 'bg-white/15 text-white'
+                  variant === 'default' ? 'bg-[#ECEAE3] text-[#0D0D0D]' : 'bg-white/10 text-white'
                 }`}
               >
                 {contest.brand.slice(0, 2).toUpperCase()}
