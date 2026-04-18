@@ -1,17 +1,18 @@
 import type { Metadata } from 'next'
-import { Big_Shoulders_Display, Epilogue } from 'next/font/google'
+import { Barlow_Condensed, Mulish } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { Analytics } from '@vercel/analytics/next'
 
-const bigShoulders = Big_Shoulders_Display({
+const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
   variable: '--font-display',
+  weight: ['700', '800', '900'],
   display: 'swap',
 })
 
-const epilogue = Epilogue({
+const mulish = Mulish({
   subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bigShoulders.variable} ${epilogue.variable}`}>
+    <html lang="en" className={`${barlowCondensed.variable} ${mulish.variable}`}>
       <body className="bg-[#F4F3EF] text-[#0D0D0D] antialiased" style={{ fontFamily: 'var(--font-body), system-ui, sans-serif' }}>
         <Navbar />
         <main className="min-h-screen">{children}</main>
