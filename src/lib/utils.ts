@@ -7,8 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 export function daysUntil(deadline: string): number {
   const now = new Date()
   now.setHours(0, 0, 0, 0)
-  const end = new Date(deadline)
-  end.setHours(0, 0, 0, 0)
+  const [year, month, day] = deadline.split('T')[0].split('-').map(Number)
+  const end = new Date(year, month - 1, day) // local midnight, no UTC shift
   return Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
 }
 
