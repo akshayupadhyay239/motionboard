@@ -56,12 +56,12 @@ export default async function ContestsPage({ searchParams }: PageProps) {
       {/* Page header */}
       <div className="mb-10 border-b border-[#E0DDD5] pb-10">
         <h1
-          className="text-5xl font-black text-[#0D0D0D] mb-1"
+          className="animate-hero-enter text-5xl font-black text-[#0D0D0D] mb-1"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {params.category ? params.category : 'All Contests'}
         </h1>
-        <p className="text-sm text-[#B5B2A9] font-medium">
+        <p className="animate-fade-up text-sm text-[#B5B2A9] font-medium" style={{ animationDelay: '80ms' }}>
           {contests.length} contest{contests.length !== 1 ? 's' : ''}
         </p>
       </div>

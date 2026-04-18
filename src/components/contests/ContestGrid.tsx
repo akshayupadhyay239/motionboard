@@ -27,19 +27,19 @@ export function ContestGrid({ contests, featured = false, emptyMessage = 'No con
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {/* Large featured card */}
           <div className="md:col-span-3">
-            <ContestCard contest={first} variant="dark" size="large" />
+            <ContestCard contest={first} variant="dark" size="large" index={0} />
           </div>
           {/* Two stacked */}
           <div className="md:col-span-2 flex flex-col gap-4">
-            <ContestCard contest={second} variant="accent" />
-            {third && <ContestCard contest={third} variant="default" />}
+            <ContestCard contest={second} variant="accent" index={1} />
+            {third && <ContestCard contest={third} variant="default" index={2} />}
           </div>
         </div>
         {/* Remaining featured as row */}
         {rest.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {rest.map((c, i) => (
-              <ContestCard key={c.id} contest={c} variant={VARIANTS[(i + 3) % VARIANTS.length]} />
+              <ContestCard key={c.id} contest={c} variant={VARIANTS[(i + 3) % VARIANTS.length]} index={i + 3} />
             ))}
           </div>
         )}
@@ -50,7 +50,7 @@ export function ContestGrid({ contests, featured = false, emptyMessage = 'No con
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {contests.map((contest, i) => (
-        <ContestCard key={contest.id} contest={contest} variant={VARIANTS[i % VARIANTS.length]} />
+        <ContestCard key={contest.id} contest={contest} variant={VARIANTS[i % VARIANTS.length]} index={i} />
       ))}
     </div>
   )

@@ -60,7 +60,7 @@ export default async function HomePage() {
       <section className="pt-16 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-end border-b border-[#E0DDD5]">
         <div>
           <h1
-            className="text-[72px] sm:text-[88px] lg:text-[96px] leading-[0.95] font-black tracking-tight text-[#0D0D0D]"
+            className="animate-hero-enter text-[72px] sm:text-[88px] lg:text-[96px] leading-[0.95] font-black tracking-tight text-[#0D0D0D]"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Every video
@@ -71,26 +71,26 @@ export default async function HomePage() {
           </h1>
         </div>
         <div className="lg:pb-3">
-          <p className="text-lg text-[#78766E] leading-relaxed max-w-sm mb-8">
+          <p className="animate-fade-up text-lg text-[#78766E] leading-relaxed max-w-sm mb-8" style={{ animationDelay: '120ms' }}>
             Discover motion design, ad, and film competitions from across the internet — Twitter, YouTube, brands, Reddit — all in one feed.
           </p>
-          <div className="flex items-center gap-3">
+          <div className="animate-fade-up flex items-center gap-3" style={{ animationDelay: '200ms' }}>
             <Link
               href="/contests"
-              className="rounded-full bg-[#0D0D0D] px-6 py-3 text-sm font-semibold text-white hover:bg-[#3A3935] transition-colors"
+              className="rounded-full bg-[#0D0D0D] px-6 py-3 text-sm font-semibold text-white hover:bg-[#3A3935] transition-colors hover:scale-[1.02] active:scale-[0.98] transition-transform"
             >
               Browse contests
             </Link>
             <Link
               href="/submit"
-              className="rounded-full border border-[#E0DDD5] px-6 py-3 text-sm font-medium text-[#78766E] hover:border-[#0D0D0D] hover:text-[#0D0D0D] transition-colors"
+              className="rounded-full border border-[#E0DDD5] px-6 py-3 text-sm font-medium text-[#78766E] hover:border-[#0D0D0D] hover:text-[#0D0D0D] transition-colors hover:scale-[1.02] active:scale-[0.98] transition-transform"
             >
               Submit one →
             </Link>
           </div>
 
           {/* Stats row */}
-          <div className="flex gap-8 mt-10 pt-8 border-t border-[#E0DDD5]">
+          <div className="animate-fade-up flex gap-8 mt-10 pt-8 border-t border-[#E0DDD5]" style={{ animationDelay: '300ms' }}>
             {totalPrizeUsd > 0 && (
               <div className="pr-8 border-r border-[#E0DDD5]">
                 <p

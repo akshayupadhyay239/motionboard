@@ -10,6 +10,10 @@
   --ink-faint: #B5B2A9;
   --white: #FFFFFF;
   --accent: #1C1C8E;
+
+  /* Easing */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -21,7 +25,61 @@ body {
   color: var(--ink);
 }
 
-/* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* ── Keyframes ─────────────────────────────────────────── */
+
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-urgent {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+/* ── Animation classes ─────────────────────────────────── */
+
+.animate-card-enter {
+  animation: card-enter 0.5s var(--ease-out-quart) both;
+}
+
+.animate-hero-enter {
+  animation: hero-enter 0.75s var(--ease-out-expo) both;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s var(--ease-out-quart) both;
+}
+
+.animate-pulse-urgent {
+  animation: pulse-urgent 2.2s ease-in-out infinite;
+}
+
+/* ── Reduced motion ────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-card-enter,
+  .animate-hero-enter,
+  .animate-fade-up {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-pulse-urgent {
+    animation: none !important;
+  }
 }

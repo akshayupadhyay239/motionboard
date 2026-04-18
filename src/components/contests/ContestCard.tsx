@@ -7,6 +7,7 @@ interface ContestCardProps {
   contest: Contest
   variant?: 'default' | 'dark' | 'accent'
   size?: 'default' | 'large'
+  index?: number
 }
 
 const PLATFORM_ICONS: Record<string, string> = {
@@ -17,10 +18,11 @@ const PLATFORM_ICONS: Record<string, string> = {
   Website: '↗',
 }
 
-export function ContestCard({ contest, variant = 'default', size = 'default' }: ContestCardProps) {
+export function ContestCard({ contest, variant = 'default', size = 'default', index = 0 }: ContestCardProps) {
   const days = daysUntil(contest.deadline)
   const isClosed = contest.status === 'closed' || days < 0
   const isUrgent = !isClosed && days <= 3
+  const staggerDelay = `${Math.min(index * 40, 400)}ms`
 
   const bgClass =
     variant === 'dark'
@@ -38,9 +40,10 @@ export function ContestCard({ contest, variant = 'default', size = 'default' }: 
   return (
     <Link href={`/contests/${contest.id}`} className="group block h-full">
       <article
-        className={`relative flex flex-col h-full rounded-3xl p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl ${bgClass} ${
+        className={`animate-card-enter relative flex flex-col h-full rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${bgClass} ${
           size === 'large' ? 'min-h-[340px]' : 'min-h-[260px]'
         }`}
+        style={{ animationDelay: staggerDelay }}
       >
         {/* Top row: brand + platform */}
         <div className="flex items-start justify-between mb-auto">
@@ -104,9 +107,7 @@ export function ContestCard({ contest, variant = 'default', size = 'default' }: 
                 isClosed
                   ? mutedClass
                   : isUrgent
-                  ? variant === 'default'
-                    ? 'text-red-600'
-                    : 'text-red-300'
+                  ? `${variant === 'default' ? 'text-red-600' : 'text-red-300'} animate-pulse-urgent`
                   : mutedClass
               }`}
             >
