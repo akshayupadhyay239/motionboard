@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Contest } from '@/lib/types'
 import { ContestCard } from './ContestCard'
 
@@ -5,16 +6,40 @@ interface ContestGridProps {
   contests: Contest[]
   featured?: boolean
   emptyMessage?: string
+  emptyType?: 'filtered' | 'default'
 }
 
 // Bento variant cycling for visual rhythm
 const VARIANTS: Array<'default' | 'dark' | 'accent'> = ['default', 'dark', 'default', 'default', 'accent', 'default']
 
-export function ContestGrid({ contests, featured = false, emptyMessage = 'No contests found.' }: ContestGridProps) {
+export function ContestGrid({ contests, featured = false, emptyMessage, emptyType = 'default' }: ContestGridProps) {
   if (contests.length === 0) {
+    if (emptyType === 'filtered') {
+      return (
+        <div className="rounded-3xl border border-[#E0DDD5] py-20 px-8 text-center">
+          <p className="text-[#3A3935] font-semibold text-lg mb-1">No contests match these filters.</p>
+          <p className="text-[#B5B2A9] text-sm mb-6">Try removing a filter or browsing everything.</p>
+          <Link
+            href="/contests"
+            className="inline-block rounded-full bg-[#0D0D0D] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#3A3935] transition-colors"
+          >
+            Clear filters
+          </Link>
+        </div>
+      )
+    }
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-[#B5B2A9]">
-        <p className="text-lg">{emptyMessage}</p>
+      <div className="rounded-3xl border border-dashed border-[#E0DDD5] py-20 px-8 text-center">
+        <p className="text-[#3A3935] font-semibold text-lg mb-1">
+          {emptyMessage ?? 'No contests here yet.'}
+        </p>
+        <p className="text-[#B5B2A9] text-sm mb-6">Know of one? Add it in 2 minutes — free.</p>
+        <Link
+          href="/submit"
+          className="inline-block rounded-full bg-[#0D0D0D] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#3A3935] transition-colors"
+        >
+          Submit a contest →
+        </Link>
       </div>
     )
   }

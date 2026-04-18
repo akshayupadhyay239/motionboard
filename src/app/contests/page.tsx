@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { ContestGrid } from '@/components/contests/ContestGrid'
+import { ContestGridSkeleton } from '@/components/contests/ContestSkeleton'
 import { FilterBar } from '@/components/contests/FilterBar'
 import { Contest } from '@/lib/types'
 import { MOCK_RECENT } from '@/lib/mockData'
@@ -68,15 +69,17 @@ export default async function ContestsPage({ searchParams }: PageProps) {
 
       {/* Filters */}
       <div className="mb-10">
-        <Suspense fallback={null}>
+        <Suspense fallback={<div className="h-[72px]" />}>
           <FilterBar />
         </Suspense>
       </div>
 
-      <ContestGrid
-        contests={contests}
-        emptyMessage={hasFilter ? 'No contests match your filters.' : 'No contests yet. Be the first to submit one!'}
-      />
+      <Suspense fallback={<ContestGridSkeleton count={6} />}>
+        <ContestGrid
+          contests={contests}
+          emptyType={hasFilter ? 'filtered' : 'default'}
+        />
+      </Suspense>
     </div>
   )
 }

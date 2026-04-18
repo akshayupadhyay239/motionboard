@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { Contest } from '@/lib/types'
 import { formatDeadline, daysUntil } from '@/lib/utils'
+import { ContestCard } from '@/components/contests/ContestCard'
 import { MOCK_RECENT } from '@/lib/mockData'
 
 const USE_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL?.startsWith('http')
@@ -12,26 +13,48 @@ interface PageProps {
   params: Promise<{ id: string }>
 }
 
-async function getContest(id: string): Promise<Contest | null> {
-  if (USE_MOCK) return MOCK_RECENT.find((c) => c.id === id) ?? null
+async function getContest(id: string): Promise<{ contest: Contest | null; related: Contest[] }> {
+  if (USE_MOCK) {
+    const contest = MOCK_RECENT.find((c) => c.id === id) ?? null
+    const related = contest
+      ? MOCK_RECENT.filter((c) => c.id !== id && c.category === contest.category).slice(0, 3)
+      : []
+    return { contest, related }
+  }
 
   try {
     const supabase = await createClient()
-    const { data } = await supabase
+    const { data: contest } = await supabase
       .from('contests')
       .select('*')
       .eq('id', id)
       .eq('approved', true)
       .single()
-    return data
+
+    const related: Contest[] = []
+    if (contest) {
+      const { data } = await supabase
+        .from('contests')
+        .select('*')
+        .eq('approved', true)
+        .eq('status', 'open')
+        .eq('category', contest.category)
+        .neq('id', id)
+        .order('deadline', { ascending: true })
+        .limit(3)
+      if (data) related.push(...(data as Contest[]))
+    }
+
+    return { contest: contest ?? null, related }
   } catch {
-    return MOCK_RECENT.find((c) => c.id === id) ?? null
+    const contest = MOCK_RECENT.find((c) => c.id === id) ?? null
+    return { contest, related: [] }
   }
 }
 
 export default async function ContestDetailPage({ params }: PageProps) {
   const { id } = await params
-  const contest = await getContest(id)
+  const { contest, related } = await getContest(id)
 
   if (!contest) notFound()
 
@@ -42,7 +65,7 @@ export default async function ContestDetailPage({ params }: PageProps) {
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
 
-      <Link href="/contests" className="inline-flex items-center gap-1.5 text-sm text-[#78766E] hover:text-[#0D0D0D] transition-colors mb-10">
+      <Link href="/contests" className="inline-flex items-center gap-1.5 text-sm font-medium text-[#78766E] hover:text-[#0D0D0D] transition-colors mb-10">
         ← Back to contests
       </Link>
 
@@ -86,7 +109,7 @@ export default async function ContestDetailPage({ params }: PageProps) {
             <div className="mb-6">
               <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Prize</p>
               <p
-                className="text-3xl font-black text-white leading-tight"
+                className="text-4xl font-black text-white leading-tight"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
                 {contest.prize}
@@ -96,10 +119,17 @@ export default async function ContestDetailPage({ params }: PageProps) {
             {/* Deadline */}
             <div className="mb-6 pb-6 border-b border-white/10">
               <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Deadline</p>
-              <p className={`text-lg font-bold ${isUrgent ? 'text-red-400' : isClosed ? 'text-white/40' : 'text-white'}`}>
-                {isClosed ? 'Contest closed' : formatDeadline(contest.deadline)}
-              </p>
-              <p className="text-xs text-white/30 mt-0.5">
+              {isUrgent ? (
+                <span className="inline-flex items-center gap-1.5 text-sm font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-red-600 text-white">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse-urgent shrink-0" />
+                  {days === 0 ? 'Closes today' : days === 1 ? '1 day left' : `${days} days left`}
+                </span>
+              ) : (
+                <p className={`text-lg font-bold ${isClosed ? 'text-white/40' : 'text-white'}`}>
+                  {isClosed ? 'Contest closed' : formatDeadline(contest.deadline)}
+                </p>
+              )}
+              <p className="text-xs text-white/30 mt-2">
                 {new Date(contest.deadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
               </p>
             </div>
@@ -121,10 +151,10 @@ export default async function ContestDetailPage({ params }: PageProps) {
               href={contest.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`block w-full rounded-2xl py-3.5 text-center font-bold text-sm transition-colors ${
+              className={`block w-full rounded-2xl py-3.5 text-center font-bold text-sm transition-all ${
                 isClosed
                   ? 'bg-white/10 text-white/30 cursor-not-allowed pointer-events-none'
-                  : 'bg-white text-[#0D0D0D] hover:bg-[#ECEAE3]'
+                  : 'bg-white text-[#0D0D0D] hover:bg-[#ECEAE3] hover:scale-[1.01] active:scale-[0.99]'
               }`}
             >
               {isClosed ? 'Contest Closed' : 'Go Enter →'}
@@ -133,6 +163,32 @@ export default async function ContestDetailPage({ params }: PageProps) {
         </div>
 
       </div>
+
+      {/* Related contests — don't let users dead-end */}
+      {related.length > 0 && (
+        <section className="mt-20 pt-16 border-t border-[#E0DDD5]">
+          <div className="flex items-baseline justify-between mb-8">
+            <h2
+              className="text-2xl font-black text-[#0D0D0D]"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              More {contest.category} contests
+            </h2>
+            <Link
+              href={`/contests?category=${encodeURIComponent(contest.category)}`}
+              className="text-sm text-[#78766E] hover:text-[#0D0D0D] transition-colors"
+            >
+              See all →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {related.map((c, i) => (
+              <ContestCard key={c.id} contest={c} index={i} />
+            ))}
+          </div>
+        </section>
+      )}
+
     </div>
   )
 }
