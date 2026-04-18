@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ContestGrid } from '@/components/contests/ContestGrid'
 import { Contest } from '@/lib/types'
 import { MOCK_FEATURED, MOCK_RECENT } from '@/lib/mockData'
+import { daysUntil } from '@/lib/utils'
 
 const USE_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL?.startsWith('http')
 
@@ -52,6 +53,10 @@ function formatPrize(amount: number): string {
 
 export default async function HomePage() {
   const { featured, recent, totalPrizeUsd } = await getContests()
+  const closingSoon = recent.filter(c => {
+    const d = daysUntil(c.deadline)
+    return c.status === 'open' && d >= 0 && d <= 7
+  })
 
   return (
     <div className="mx-auto max-w-7xl px-6">
@@ -133,6 +138,27 @@ export default async function HomePage() {
             </Link>
           </div>
           <ContestGrid contests={featured} featured />
+        </section>
+      )}
+
+      {/* Closing This Week */}
+      {closingSoon.length > 0 && (
+        <section className="py-16 border-b border-[#E0DDD5]">
+          <div className="flex items-baseline justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse-urgent shrink-0" />
+              <h2
+                className="text-3xl font-black text-[#0D0D0D]"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                Closing this week
+              </h2>
+            </div>
+            <p className="text-sm text-[#78766E] hidden sm:block">
+              {closingSoon.length} contest{closingSoon.length !== 1 ? 's' : ''} — enter before it&apos;s gone
+            </p>
+          </div>
+          <ContestGrid contests={closingSoon} />
         </section>
       )}
 

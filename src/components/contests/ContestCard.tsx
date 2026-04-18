@@ -94,26 +94,25 @@ export function ContestCard({ contest, variant = 'default', size = 'default', in
         </p>
 
         {/* Bottom: prize + deadline */}
-        <div className={`mt-6 pt-4 border-t flex items-end justify-between ${borderClass}`}>
-          <div>
-            <p className={`text-[10px] font-semibold uppercase tracking-widest mb-0.5 ${mutedClass}`}>Prize</p>
-            <p className={`text-xl font-black leading-none ${variant === 'default' ? 'text-[#0D0D0D]' : 'text-white'}`}>
-              {contest.prize}
-            </p>
-          </div>
-          <div className="text-right">
-            <p
-              className={`text-[11px] font-semibold ${
-                isClosed
-                  ? mutedClass
-                  : isUrgent
-                  ? `${variant === 'default' ? 'text-red-600' : 'text-red-300'} animate-pulse-urgent`
-                  : mutedClass
-              }`}
-            >
-              {isClosed ? 'Closed' : formatDeadline(contest.deadline)}
-            </p>
-            <p className={`text-[10px] uppercase tracking-wider ${mutedClass}`}>{contest.category}</p>
+        <div className={`mt-6 pt-4 border-t ${borderClass}`}>
+          <p className={`text-[10px] font-semibold uppercase tracking-widest mb-1 ${mutedClass}`}>Prize</p>
+          <p className={`${size === 'large' ? 'text-4xl' : 'text-3xl'} font-black leading-none tracking-tight ${variant === 'default' ? 'text-[#0D0D0D]' : 'text-white'}`}>
+            {contest.prize}
+          </p>
+          <div className="mt-3 flex items-center justify-between gap-2">
+            {!isClosed && isUrgent ? (
+              <span className={`inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                variant === 'default' ? 'bg-red-600 text-white' : 'bg-red-400/90 text-white'
+              }`}>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse-urgent shrink-0" />
+                {days === 0 ? 'Closes today' : days === 1 ? '1 day left' : `${days} days left`}
+              </span>
+            ) : (
+              <p className={`text-[11px] font-semibold ${isClosed ? mutedClass : mutedClass}`}>
+                {isClosed ? 'Closed' : formatDeadline(contest.deadline)}
+              </p>
+            )}
+            <p className={`text-[10px] uppercase tracking-wider shrink-0 ${mutedClass}`}>{contest.category}</p>
           </div>
         </div>
 
