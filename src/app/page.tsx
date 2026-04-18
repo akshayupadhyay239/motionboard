@@ -4,6 +4,8 @@ import { ContestGrid } from '@/components/contests/ContestGrid'
 import { Contest } from '@/lib/types'
 import { MOCK_FEATURED, MOCK_RECENT } from '@/lib/mockData'
 import { daysUntil } from '@/lib/utils'
+import { ContestTicker } from '@/components/hero/ContestTicker'
+import { EmailSubscribeForm } from '@/components/hero/EmailSubscribeForm'
 
 const USE_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL?.startsWith('http')
 
@@ -61,65 +63,98 @@ export default async function HomePage() {
   return (
     <div className="mx-auto max-w-7xl px-6">
 
-      {/* Hero — editorial, left-aligned, magazine-style */}
-      <section className="pt-16 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-end border-b border-[#E0DDD5]">
-        <div>
-          <h1
-            className="animate-hero-enter text-[72px] sm:text-[88px] lg:text-[96px] leading-[0.95] font-black tracking-tight text-[#0D0D0D]"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            Every video
-            <br />
-            contest.
-            <br />
-            <span className="italic font-bold text-[#3A3935]">One place.</span>
-          </h1>
-        </div>
-        <div className="lg:pb-3">
-          <p className="animate-fade-up text-lg text-[#78766E] leading-relaxed max-w-sm mb-8" style={{ animationDelay: '120ms' }}>
-            Discover motion design, ad, and film competitions from across the internet — Twitter, YouTube, brands, Reddit — all in one feed.
-          </p>
-          <div className="animate-fade-up flex items-center gap-3" style={{ animationDelay: '200ms' }}>
-            <Link
-              href="/contests"
-              className="rounded-full bg-[#0D0D0D] px-6 py-3 text-sm font-semibold text-white hover:bg-[#3A3935] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+      {/* Hero — asymmetric: left content + right live ticker */}
+      <section className="pt-16 pb-20 border-b border-[#E0DDD5]">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-8 items-start">
+
+          {/* Left: content */}
+          <div className="lg:col-span-3 flex flex-col">
+
+            <p className="animate-fade-up text-[10px] font-bold uppercase tracking-widest text-[#B5B2A9] mb-5">
+              motionBoard — contest directory
+            </p>
+
+            <h1
+              className="animate-hero-enter text-[68px] sm:text-[84px] lg:text-[92px] xl:text-[108px] leading-[0.92] font-black tracking-tight text-[#0D0D0D] mb-8"
+              style={{ fontFamily: 'var(--font-display)' }}
             >
-              Browse contests
-            </Link>
-            <Link
-              href="/submit"
-              className="rounded-full border border-[#E0DDD5] px-6 py-3 text-sm font-medium text-[#78766E] hover:border-[#0D0D0D] hover:text-[#0D0D0D] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              Every video<br />
+              contest.<br />
+              <span className="text-[#1C1C8E]">One place.</span>
+            </h1>
+
+            <p
+              className="animate-fade-up text-base text-[#78766E] leading-relaxed max-w-md mb-8"
+              style={{ animationDelay: '120ms' }}
             >
-              Submit one →
-            </Link>
+              Discover motion design, ad, and film competitions from across the internet — Twitter, YouTube, brands, Reddit — all in one feed.
+            </p>
+
+            <div
+              className="animate-fade-up flex items-center gap-3 mb-8"
+              style={{ animationDelay: '200ms' }}
+            >
+              <Link
+                href="/contests"
+                className="rounded-full bg-[#0D0D0D] px-6 py-3 text-sm font-semibold text-white hover:bg-[#3A3935] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              >
+                Browse contests
+              </Link>
+              <Link
+                href="/submit"
+                className="rounded-full border border-[#E0DDD5] px-6 py-3 text-sm font-medium text-[#78766E] hover:border-[#0D0D0D] hover:text-[#0D0D0D] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              >
+                Submit one →
+              </Link>
+            </div>
+
+            {/* Newsletter */}
+            <div
+              className="animate-fade-up mb-10"
+              style={{ animationDelay: '280ms' }}
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#B5B2A9] mb-2">
+                New contests in your inbox
+              </p>
+              <EmailSubscribeForm />
+            </div>
+
+            {/* Stats strip */}
+            <div
+              className="animate-fade-up flex flex-wrap gap-x-8 gap-y-4 pt-8 border-t border-[#E0DDD5]"
+              style={{ animationDelay: '360ms' }}
+            >
+              {totalPrizeUsd > 0 && (
+                <div>
+                  <p
+                    className="text-3xl font-black text-[#0D0D0D] tabular-nums leading-none"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    {formatPrize(totalPrizeUsd)}
+                  </p>
+                  <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">In prizes</p>
+                </div>
+              )}
+              <div>
+                <p className="text-3xl font-black text-[#0D0D0D] leading-none">{recent.filter(c => c.status === 'open').length}</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">Open now</p>
+              </div>
+              <div>
+                <p className="text-3xl font-black text-[#0D0D0D] leading-none">5</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">Platforms</p>
+              </div>
+              <div>
+                <p className="text-3xl font-black text-[#0D0D0D] leading-none">Free</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">To enter</p>
+              </div>
+            </div>
           </div>
 
-          {/* Stats row */}
-          <div className="animate-fade-up flex gap-8 mt-10 pt-8 border-t border-[#E0DDD5]" style={{ animationDelay: '300ms' }}>
-            {totalPrizeUsd > 0 && (
-              <div className="pr-8 border-r border-[#E0DDD5]">
-                <p
-                  className="text-4xl font-black text-[#0D0D0D] tabular-nums"
-                  style={{ fontFamily: 'var(--font-display)' }}
-                >
-                  {formatPrize(totalPrizeUsd)}
-                </p>
-                <p className="text-xs uppercase tracking-widest text-[#B5B2A9] font-semibold mt-0.5">In prizes</p>
-              </div>
-            )}
-            <div>
-              <p className="text-2xl font-black text-[#0D0D0D]">{recent.filter(c => c.status === 'open').length}</p>
-              <p className="text-xs uppercase tracking-widest text-[#B5B2A9] font-semibold mt-0.5">Open now</p>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-[#0D0D0D]">5</p>
-              <p className="text-xs uppercase tracking-widest text-[#B5B2A9] font-semibold mt-0.5">Platforms</p>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-[#0D0D0D]">Free</p>
-              <p className="text-xs uppercase tracking-widest text-[#B5B2A9] font-semibold mt-0.5">To enter</p>
-            </div>
+          {/* Right: live contest ticker — desktop only */}
+          <div className="hidden lg:block lg:col-span-2" style={{ height: '520px' }}>
+            <ContestTicker contests={recent.filter(c => c.status === 'open')} />
           </div>
+
         </div>
       </section>
 

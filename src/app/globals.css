@@ -60,6 +60,11 @@ html {
   50%       { opacity: 0.55; }
 }
 
+@keyframes ticker-scroll {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
 /* ── Animation classes ─────────────────────────────────── */
 
 .animate-card-enter {
@@ -78,6 +83,14 @@ html {
   animation: pulse-urgent 2.2s ease-in-out infinite;
 }
 
+.animate-ticker-scroll {
+  animation: ticker-scroll 30s linear infinite;
+}
+
+.animate-ticker-scroll:hover {
+  animation-play-state: paused;
+}
+
 /* ── Reduced motion ────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
@@ -89,6 +102,9 @@ html {
     transform: none !important;
   }
   .animate-pulse-urgent {
+    animation: none !important;
+  }
+  .animate-ticker-scroll {
     animation: none !important;
   }
 }
