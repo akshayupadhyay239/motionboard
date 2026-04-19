@@ -39,3 +39,14 @@ export type ContestInsert = Omit<Contest, 'id' | 'created_at' | 'approved' | 'fe
   featured?: boolean
   status?: ContestStatus
 }
+
+export interface Winner {
+  id: string
+  creator_handle: string
+  work_url: string
+  prize: string
+  brand: string
+  contest_id: string | null
+  won_at: string
+  created_at: string
+}

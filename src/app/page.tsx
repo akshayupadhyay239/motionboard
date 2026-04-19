@@ -6,44 +6,32 @@ import { MOCK_FEATURED, MOCK_RECENT } from '@/lib/mockData'
 import { daysUntil } from '@/lib/utils'
 import { ContestTicker } from '@/components/hero/ContestTicker'
 import { EmailSubscribeForm } from '@/components/hero/EmailSubscribeForm'
+import { WinnerCard } from '@/components/winners/WinnerCard'
+import { Winner } from '@/lib/types'
 
 const USE_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL?.startsWith('http')
 
 async function getContests() {
-  if (USE_MOCK) return { featured: MOCK_FEATURED, recent: MOCK_RECENT, totalPrizeUsd: 0 }
+  if (USE_MOCK) return { featured: MOCK_FEATURED, recent: MOCK_RECENT, totalPrizeUsd: 0, winners: [] as Winner[] }
 
   try {
     const supabase = await createClient()
 
-    const { data: featured } = await supabase
-      .from('contests')
-      .select('*')
-      .eq('approved', true)
-      .eq('featured', true)
-      .eq('status', 'open')
-      .order('created_at', { ascending: false })
-      .limit(4)
-
-    const { data: recent } = await supabase
-      .from('contests')
-      .select('*')
-      .eq('approved', true)
-      .order('created_at', { ascending: false })
-      .limit(12)
-
-    const { data: stats } = await supabase
-      .from('site_stats')
-      .select('total_prize_usd')
-      .eq('id', 1)
-      .single()
+    const [featuredRes, recentRes, statsRes, winnersRes] = await Promise.all([
+      supabase.from('contests').select('*').eq('approved', true).eq('featured', true).eq('status', 'open').order('created_at', { ascending: false }).limit(4),
+      supabase.from('contests').select('*').eq('approved', true).order('created_at', { ascending: false }).limit(12),
+      supabase.from('site_stats').select('total_prize_usd').eq('id', 1).single(),
+      supabase.from('winners').select('*').order('won_at', { ascending: false }).limit(4),
+    ])
 
     return {
-      featured: (featured ?? []) as Contest[],
-      recent: (recent ?? []) as Contest[],
-      totalPrizeUsd: stats?.total_prize_usd ?? 0,
+      featured: (featuredRes.data ?? []) as Contest[],
+      recent: (recentRes.data ?? []) as Contest[],
+      totalPrizeUsd: statsRes.data?.total_prize_usd ?? 0,
+      winners: (winnersRes.data ?? []) as Winner[],
     }
   } catch {
-    return { featured: MOCK_FEATURED, recent: MOCK_RECENT, totalPrizeUsd: 0 }
+    return { featured: MOCK_FEATURED, recent: MOCK_RECENT, totalPrizeUsd: 0, winners: [] as Winner[] }
   }
 }
 
@@ -54,7 +42,7 @@ function formatPrize(amount: number): string {
 }
 
 export default async function HomePage() {
-  const { featured, recent, totalPrizeUsd } = await getContests()
+  const { featured, recent, totalPrizeUsd, winners } = await getContests()
   const closingSoon = recent.filter(c => {
     const d = daysUntil(c.deadline)
     return c.status === 'open' && d >= 0 && d <= 7
@@ -157,6 +145,28 @@ export default async function HomePage() {
 
         </div>
       </section>
+
+      {/* Past Winners teaser */}
+      {winners.length > 0 && (
+        <section className="py-16 border-b border-[#E0DDD5]">
+          <div className="flex items-baseline justify-between mb-8">
+            <h2
+              className="text-3xl font-black text-[#0D0D0D]"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Past Winners
+            </h2>
+            <Link href="/winners" className="text-sm text-[#78766E] hover:text-[#0D0D0D] transition-colors">
+              See all →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {winners.map((winner, i) => (
+              <WinnerCard key={winner.id} winner={winner} size={i === 0 ? 'large' : 'default'} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Featured */}
       {featured.length > 0 && (
