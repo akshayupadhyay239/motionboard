@@ -6,6 +6,7 @@ import { Contest } from '@/lib/types'
 import { formatDeadline, daysUntil } from '@/lib/utils'
 import { ContestCard } from '@/components/contests/ContestCard'
 import { MOCK_RECENT } from '@/lib/mockData'
+import { EmailSubscribeForm } from '@/components/hero/EmailSubscribeForm'
 
 const USE_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL?.startsWith('http')
 
@@ -128,6 +129,20 @@ export default async function ContestDetailPage({ params }: PageProps) {
             >
               {isClosed ? 'Contest Closed' : 'Go Enter →'}
             </a>
+
+            {/* Email capture — high intent moment */}
+            {!isClosed && (
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">48hr deadline alerts</p>
+                <p className="text-xs text-white/50 mb-3">Get pinged before contests like this one close.</p>
+                <EmailSubscribeForm
+                  variant="dark"
+                  label="Get alerts"
+                  placeholder="your@email.com"
+                  successMessage="✓ You'll get alerts before deadlines close."
+                />
+              </div>
+            )}
           </div>
         </div>
 

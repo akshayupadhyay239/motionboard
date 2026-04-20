@@ -96,17 +96,6 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            {/* Newsletter */}
-            <div
-              className="animate-fade-up mb-10"
-              style={{ animationDelay: '280ms' }}
-            >
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#B5B2A9] mb-2">
-                New contests in your inbox
-              </p>
-              <EmailSubscribeForm />
-            </div>
-
             {/* Stats strip */}
             <div
               className="animate-fade-up flex flex-wrap gap-x-8 gap-y-4 pt-8 border-t border-[#E0DDD5]"
@@ -234,6 +223,25 @@ export default async function HomePage() {
         ) : (
           <ContestGrid contests={recent} />
         )}
+      </section>
+
+      {/* 48hr Deadline Alerts — email capture after value delivered */}
+      <section className="py-16 border-b border-[#E0DDD5]">
+        <div className="rounded-3xl bg-[#ECEAE3] px-10 py-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#B5B2A9] mb-2">Never miss money</p>
+            <h2
+              className="text-3xl sm:text-4xl font-black text-[#0D0D0D] leading-tight mb-2"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              48hr deadline alerts.
+            </h2>
+            <p className="text-sm text-[#78766E]">We&apos;ll ping you before contests close. No spam. Just money.</p>
+          </div>
+          <div className="w-full sm:w-auto shrink-0 sm:min-w-[320px]">
+            <EmailSubscribeForm label="Get alerts" placeholder="your@email.com" successMessage="✓ You'll get alerts 48hrs before deadlines." />
+          </div>
+        </div>
       </section>
 
       {/* Submit CTA — editorial block */}

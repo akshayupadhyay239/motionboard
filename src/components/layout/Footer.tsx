@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { CATEGORIES } from '@/lib/utils'
+import { EmailSubscribeForm } from '@/components/hero/EmailSubscribeForm'
 
 export function Footer() {
   return (
@@ -32,6 +33,17 @@ export function Footer() {
             </ul>
           </div>
         </div>
+        {/* Newsletter strip */}
+        <div className="border-t border-[#E0DDD5] py-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#B5B2A9] mb-1">Weekly roundup</p>
+            <p className="text-sm text-[#78766E]">New contests. Closing deadlines. Prize drops. Every week.</p>
+          </div>
+          <div className="shrink-0 sm:min-w-[300px]">
+            <EmailSubscribeForm label="Subscribe" successMessage="✓ Weekly roundup incoming." />
+          </div>
+        </div>
+
         <div className="border-t border-[#E0DDD5] pt-6 text-[11px] text-[#B5B2A9]">
           © {new Date().getFullYear()} motionBoard. Built for creators.
         </div>
