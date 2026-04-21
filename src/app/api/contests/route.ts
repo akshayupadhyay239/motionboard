@@ -39,7 +39,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, contest: data }, { status: 201 })
   } catch (err) {
-    console.error('[POST /api/contests]', err)
-    return NextResponse.json({ error: 'Failed to submit contest' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[POST /api/contests]', msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
