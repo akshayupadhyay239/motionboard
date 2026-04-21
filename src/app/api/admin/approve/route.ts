@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
 
 export async function PATCH(req: NextRequest) {
   const supabase = await createClient()
@@ -29,6 +30,11 @@ export async function PATCH(req: NextRequest) {
       .single()
 
     if (error) throw error
+
+    // Bust cache so approved contest appears on public pages immediately
+    revalidatePath('/')
+    revalidatePath('/contests')
+    revalidatePath(`/contests/${id}`)
 
     return NextResponse.json({ success: true, contest: data })
   } catch (err) {
