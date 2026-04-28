@@ -53,7 +53,7 @@ export default async function HomePage() {
     .sort((a, b) => {
       const dayDiff = daysUntil(a.deadline) - daysUntil(b.deadline)
       if (dayDiff !== 0) return dayDiff
-      return (b.prize_usd ?? 0) - (a.prize_usd ?? 0)
+      return (parseFloat(b.prize) || 0) - (parseFloat(a.prize) || 0)
     })
 
   return (
