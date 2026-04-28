@@ -7,6 +7,7 @@ interface EmailSubscribeFormProps {
   placeholder?: string
   variant?: 'light' | 'dark'
   successMessage?: string
+  onSuccess?: () => void
 }
 
 export function EmailSubscribeForm({
@@ -14,6 +15,7 @@ export function EmailSubscribeForm({
   placeholder = 'your@email.com',
   variant = 'light',
   successMessage = "✓ You're in — we'll send deadline alerts.",
+  onSuccess,
 }: EmailSubscribeFormProps) {
   const [email, setEmail] = useState('')
   const [state, setState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
@@ -32,6 +34,7 @@ export function EmailSubscribeForm({
       if (res.ok) {
         setState('success')
         setEmail('')
+        onSuccess?.()
       } else {
         const body = await res.json().catch(() => ({}))
         setErrorMsg(body.error || 'Something went wrong')

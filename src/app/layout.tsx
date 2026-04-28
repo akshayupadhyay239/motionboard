@@ -3,6 +3,7 @@ import { Barlow_Condensed, Mulish } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { EmailPopup } from '@/components/hero/EmailPopup'
 import { Analytics } from '@vercel/analytics/next'
 
 const barlowCondensed = Barlow_Condensed({
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />
+        <EmailPopup />
         <Analytics />
       </body>
     </html>
