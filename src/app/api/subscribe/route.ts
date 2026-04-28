@@ -20,11 +20,16 @@ export async function POST(req: Request) {
     const supabase = await createServiceClient()
     const { error } = await supabase
       .from('subscribers')
-      .upsert({ email }, { onConflict: 'email', ignoreDuplicates: true })
+      .insert({ email })
 
-    if (error) throw error
+    // 23505 = unique_violation — email already subscribed, still a success
+    if (error && error.code !== '23505') {
+      console.error('[subscribe]', error.message)
+      return NextResponse.json({ error: 'Failed to subscribe — try again' }, { status: 500 })
+    }
     return NextResponse.json({ ok: true })
-  } catch {
+  } catch (err) {
+    console.error('[subscribe]', err)
     return NextResponse.json({ error: 'Failed to subscribe — try again' }, { status: 500 })
   }
 }
