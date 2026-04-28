@@ -45,10 +45,16 @@ function formatPrize(amount: number): string {
 
 export default async function HomePage() {
   const { featured, recent, totalPrizeUsd, winners } = await getContests()
-  const closingSoon = recent.filter(c => {
-    const d = daysUntil(c.deadline)
-    return c.status === 'open' && d >= 0 && d <= 7
-  })
+  const closingSoon = recent
+    .filter(c => {
+      const d = daysUntil(c.deadline)
+      return c.status === 'open' && d >= 0 && d <= 7
+    })
+    .sort((a, b) => {
+      const dayDiff = daysUntil(a.deadline) - daysUntil(b.deadline)
+      if (dayDiff !== 0) return dayDiff
+      return (b.prize_usd ?? 0) - (a.prize_usd ?? 0)
+    })
 
   return (
     <div className="mx-auto max-w-7xl px-6">
