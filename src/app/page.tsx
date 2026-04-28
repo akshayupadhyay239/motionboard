@@ -17,8 +17,10 @@ async function getContests() {
   try {
     const supabase = await createClient()
 
+    const today = new Date().toISOString().split('T')[0]
+
     const [featuredRes, recentRes, statsRes, winnersRes] = await Promise.all([
-      supabase.from('contests').select('*').eq('approved', true).eq('featured', true).eq('status', 'open').order('created_at', { ascending: false }).limit(4),
+      supabase.from('contests').select('*').eq('approved', true).eq('featured', true).eq('status', 'open').gte('deadline', today).order('deadline', { ascending: true }).limit(4),
       supabase.from('contests').select('*').eq('approved', true).order('created_at', { ascending: false }).limit(12),
       supabase.from('site_stats').select('total_prize_usd').eq('id', 1).single(),
       supabase.from('winners').select('*').order('won_at', { ascending: false }).limit(4),
@@ -157,24 +159,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Featured */}
-      {featured.length > 0 && (
-        <section className="py-16 border-b border-[#E0DDD5]">
-          <div className="flex items-baseline justify-between mb-8">
-            <h2
-              className="text-3xl font-black text-[#0D0D0D]"
-              style={{ fontFamily: 'var(--font-display)' }}
-            >
-              Featured
-            </h2>
-            <Link href="/contests" className="text-sm text-[#78766E] hover:text-[#0D0D0D] transition-colors">
-              See all →
-            </Link>
-          </div>
-          <ContestGrid contests={featured} featured />
-        </section>
-      )}
-
       {/* Closing This Week */}
       {closingSoon.length > 0 && (
         <section className="py-16 border-b border-[#E0DDD5]">
@@ -193,6 +177,24 @@ export default async function HomePage() {
             </p>
           </div>
           <ContestGrid contests={closingSoon} />
+        </section>
+      )}
+
+      {/* Featured */}
+      {featured.length > 0 && (
+        <section className="py-16 border-b border-[#E0DDD5]">
+          <div className="flex items-baseline justify-between mb-8">
+            <h2
+              className="text-3xl font-black text-[#0D0D0D]"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Featured
+            </h2>
+            <Link href="/contests" className="text-sm text-[#78766E] hover:text-[#0D0D0D] transition-colors">
+              See all →
+            </Link>
+          </div>
+          <ContestGrid contests={featured} featured />
         </section>
       )}
 
