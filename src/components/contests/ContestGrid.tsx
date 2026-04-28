@@ -9,8 +9,6 @@ interface ContestGridProps {
   emptyType?: 'filtered' | 'default'
 }
 
-// Bento variant cycling for visual rhythm
-const VARIANTS: Array<'default' | 'dark' | 'accent'> = ['default', 'dark', 'default', 'default', 'accent', 'default']
 
 export function ContestGrid({ contests, featured = false, emptyMessage, emptyType = 'default' }: ContestGridProps) {
   if (contests.length === 0) {
@@ -64,7 +62,7 @@ export function ContestGrid({ contests, featured = false, emptyMessage, emptyTyp
         {rest.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {rest.map((c, i) => (
-              <ContestCard key={c.id} contest={c} variant={VARIANTS[(i + 3) % VARIANTS.length]} index={i + 3} />
+              <ContestCard key={c.id} contest={c} variant="default" index={i + 3} />
             ))}
           </div>
         )}
@@ -75,7 +73,7 @@ export function ContestGrid({ contests, featured = false, emptyMessage, emptyTyp
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {contests.map((contest, i) => (
-        <ContestCard key={contest.id} contest={contest} variant={VARIANTS[i % VARIANTS.length]} index={i} />
+        <ContestCard key={contest.id} contest={contest} variant="default" index={i} />
       ))}
     </div>
   )
