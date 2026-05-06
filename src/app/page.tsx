@@ -68,23 +68,23 @@ export default async function HomePage() {
           <div className="lg:col-span-3 flex flex-col">
 
             <p className="animate-fade-up text-[10px] font-bold uppercase tracking-widest text-[#B5B2A9] mb-5">
-              motionBoard — contest directory
+              motionBoard — updated daily
             </p>
 
             <h1
               className="animate-hero-enter text-[68px] sm:text-[84px] lg:text-[92px] xl:text-[108px] leading-[0.92] font-black tracking-tight text-[#0D0D0D] mb-8"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Every video<br />
-              contest.<br />
-              <span className="text-[#1C1C8E]">One place.</span>
+              Find contests.<br />
+              Win money.<br />
+              <span className="text-[#1C1C8E]">Get noticed.</span>
             </h1>
 
             <p
               className="animate-fade-up text-base text-[#78766E] leading-relaxed max-w-md mb-8"
               style={{ animationDelay: '120ms' }}
             >
-              Discover motion design, ad, and film competitions from across the internet — Twitter, YouTube, brands, Reddit — all in one feed.
+              For AI creators, motion designers & filmmakers. We scan Twitter, YouTube, Reddit & the web so you never miss a live contest.
             </p>
 
             <div
@@ -116,22 +116,22 @@ export default async function HomePage() {
                     className="text-3xl font-black text-[#0D0D0D] tabular-nums leading-none"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
-                    {formatPrize(totalPrizeUsd)}
+                    {formatPrize(totalPrizeUsd)}+
                   </p>
-                  <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">In prizes</p>
+                  <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">In live prizes</p>
                 </div>
               )}
               <div>
                 <p className="text-3xl font-black text-[#0D0D0D] leading-none">{recent.filter(c => c.status === 'open').length}</p>
-                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">Open now</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">Open today</p>
               </div>
               <div>
                 <p className="text-3xl font-black text-[#0D0D0D] leading-none">5</p>
-                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">Platforms</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">Sources scanned</p>
               </div>
               <div>
                 <p className="text-3xl font-black text-[#0D0D0D] leading-none">Free</p>
-                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">To enter</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#B5B2A9] font-semibold mt-1">To enter — always</p>
               </div>
             </div>
           </div>
