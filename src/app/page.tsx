@@ -21,7 +21,7 @@ async function getContests() {
 
     const [featuredRes, recentRes, statsRes, winnersRes] = await Promise.all([
       supabase.from('contests').select('*').eq('approved', true).eq('featured', true).eq('status', 'open').gte('deadline', today).order('deadline', { ascending: true }).limit(4),
-      supabase.from('contests').select('*').eq('approved', true).order('created_at', { ascending: false }).limit(12),
+      supabase.from('contests').select('*').eq('approved', true).eq('status', 'open').gte('deadline', today).order('created_at', { ascending: false }).limit(12),
       supabase.from('site_stats').select('total_prize_usd').eq('id', 1).single(),
       supabase.from('winners').select('*').order('won_at', { ascending: false }).limit(4),
     ])
